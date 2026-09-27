@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clear Ledger Bookkeeping</title>
+  <meta name="description" content="Accurate, reconciled bookkeeping for small businesses in the US, UK, Australia, Canada, Ireland and Mexico.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --surface: #ffffff;
+      --ink: #1c2321;
+      --muted: #5b6662;
+      --line: #e3e1da;
+      --accent: #1f6f5c;
+      --accent-ink: #ffffff;
+      --accent-soft: #e4f0ec;
+      --radius: 14px;
+      --max: 1120px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #121615;
+        --surface: #1a201e;
+        --ink: #e9ecea;
+        --muted: #a3ada9;
+        --line: #2a3230;
+        --accent: #4fb89b;
+        --accent-ink: #0d1412;
+        --accent-soft: #1d2f2a;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #121615;
+      --surface: #1a201e;
+      --ink: #e9ecea;
+      --muted: #a3ada9;
+      --line: #2a3230;
+      --accent: #4fb89b;
+      --accent-ink: #0d1412;
+      --accent-soft: #1d2f2a;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.6 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+    @media (min-width: 720px) { .wrap { padding: 0 32px; } }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; text-decoration: none; }
+    .brand-mark {
+      width: 30px; height: 30px; border-radius: 8px; background: var(--accent);
+      display: grid; place-items: center; color: var(--accent-ink);
+    }
+    .nav-links { display: none; gap: 28px; font-size: 15px; color: var(--muted); }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--ink); }
+    @media (min-width: 820px) { .nav-links { display: flex; } }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 20px; border-radius: 999px; font-weight: 600; font-size: 15px;
+      text-decoration: none; border: 1px solid transparent; transition: transform .15s, background .15s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--accent); color: var(--accent-ink); }
+    .btn-ghost { border-color: var(--line); background: var(--surface); }
+    .btn-sm { padding: 8px 16px; font-size: 14px; }
+
+    /* Hero */
+    .hero { padding-top: 72px; padding-bottom: 56px; }
+    .hero-grid { display: grid; gap: 48px; align-items: center; }
+    @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.1fr .9fr; } .hero { padding-top: 104px; padding-bottom: 88px; } }
+    .eyebrow {
+      display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .04em;
+      color: var(--accent); background: var(--accent-soft); padding: 6px 12px; border-radius: 999px;
+    }
+    h1, h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; letter-spacing: -.01em; line-height: 1.15; }
+    h1 { font-size: clamp(36px, 6vw, 58px); margin: 20px 0 16px; }
+    h2 { font-size: clamp(28px, 4vw, 38px); margin: 0 0 12px; }
+    h3 { font-size: 18px; margin: 0 0 6px; }
+    .lead { font-size: 18px; color: var(--muted); max-width: 540px; margin: 0 0 32px; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    /* Reconciliation card */
+    .rec-card {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 20px;
+      padding: 24px; box-shadow: 0 20px 50px -30px rgba(0,0,0,.35);
+    }
+    .rec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .rec-title { font-weight: 600; }
+    .pill { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+    .rec-row { display: flex; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--line); font-size: 15px; }
+    .rec-row span:first-child { color: var(--muted); }
+    .rec-row.total { font-weight: 700; }
+    .rec-row.total span:first-child { color: var(--ink); }
+    .num { font-variant-numeric: tabular-nums; }
+    .check { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 14px; color: var(--accent); font-weight: 600; }
+
+    /* Sections */
+    section { padding: 72px 0; }
+    .section-head { max-width: 620px; margin-bottom: 40px; }
+    .section-head p { color: var(--muted); margin: 0; }
+    .alt { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+    .grid { display: grid; gap: 20px; }
+    @media (min-width: 640px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+    .alt .card { background: var(--bg); }
+    .card p { margin: 0; color: var(--muted); font-size: 15px; }
+    .icon {
+      width: 40px; height: 40px; border-radius: 10px; background: var(--accent-soft); color: var(--accent);
+      display: grid; place-items: center; margin-bottom: 16px;
+    }
+    .icon svg { width: 20px; height: 20px; }
+
+    /* Steps */
+    .steps { counter-reset: step; }
+    .step { position: relative; padding-left: 56px; }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      position: absolute; left: 0; top: 0; width: 38px; height: 38px; border-radius: 50%;
+      border: 1.5px solid var(--accent); color: var(--accent); font-weight: 700;
+      display: grid; place-items: center;
+    }
+    .step p { margin: 0; color: var(--muted); font-size: 15px; }
+
+    /* Regions */
+    .regions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .region { padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-weight: 500; font-size: 15px; }
+    .tools { margin-top: 28px; color: var(--muted); font-size: 15px; }
+    .tools strong { color: var(--ink); }
+
+    /* Contact */
+    .contact {
+      background: var(--accent); color: var(--accent-ink); border-radius: 24px; padding: 40px 24px; text-align: center;
+    }
+    @media (min-width: 720px) { .contact { padding: 56px; } }
+    .contact h2 { margin-bottom: 10px; }
+    .contact p { margin: 0 auto 28px; max-width: 520px; opacity: .9; }
+    .contact .btn { background: var(--accent-ink); color: var(--accent); }
+
+    footer { padding: 32px 0 48px; color: var(--muted); font-size: 14px; }
+    .foot { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>
+        </span>
+        Clear Ledger
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#services">Services</a>
+        <a href="#process">How it works</a>
+        <a href="#regions">Where we work</a>
+      </nav>
+      <a class="btn btn-primary btn-sm" href="#contact">Get in touch</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <div class="wrap hero">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Bookkeeping · Reconciliation · Review</span>
+          <h1>Books that balance, every single month.</h1>
+          <p class="lead">We keep your accounts accurate, reconciled and ready for your accountant, so you can run your business without worrying about the numbers.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#contact">Book a free consultation</a>
+            <a class="btn btn-ghost" href="#services">See our services</a>
+          </div>
+        </div>
+
+        <div class="rec-card" aria-label="Example bank reconciliation">
+          <div class="rec-head">
+            <span class="rec-title">Bank reconciliation · Example</span>
+            <span class="pill">Reconciled</span>
+          </div>
+          <div class="rec-row"><span>Statement ending balance</span><span class="num">$48,210.55</span></div>
+          <div class="rec-row"><span>Add: deposits in transit</span><span class="num">$1,350.00</span></div>
+          <div class="rec-row"><span>Less: outstanding cheques</span><span class="num">−$2,115.40</span></div>
+          <div class="rec-row total"><span>Adjusted bank balance</span><span class="num">$47,445.15</span></div>
+          <div class="rec-row total"><span>Book balance</span><span class="num">$47,445.15</span></div>
+          <div class="check">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+            Difference: $0.00
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <section id="services" class="alt">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>What we do</h2>
+          <p>Day-to-day bookkeeping done carefully, with every account checked against its source documents.</p>
+        </div>
+        <div class="grid grid-2 grid-3">
+          <div class="card">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18M12 3l9 5H3z"/></svg></div>
+            <h3>Bank &amp; card reconciliation</h3>
+            <p>Monthly reconciliation of every bank, credit card and loan account, with a clear list of any reconciling items.</p>
+          </div>
+          <div class="card">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+            <h3>Transaction categorisation</h3>
+            <p>Every transaction coded to the right account in your chart of accounts, consistently, month after month.</p>
+          </div>
+          <div class="card">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></div>
+            <h3>Statement extraction</h3>
+            <p>Bank and card statements converted into clean, import-ready files for QuickBooks Online or Xero.</p>
+          </div>
+          <div class="card">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+            <h3>Books review &amp; clean-up</h3>
+            <p>A full review of existing books to find duplicates, miscoding and gaps, then fix them before year-end.</p>
+          </div>
+          <div class="card">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div>
+            <h3>Monthly financial reports</h3>
+            <p>Profit &amp; loss, balance sheet and a short summary of what changed, delivered after each close.</p>
+          </div>
+          <div class="card">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M9 4v16M4 9h16"/></svg></div>
+            <h3>Document organisation</h3>
+            <p>Invoices, receipts and statements named, filed and checked for missing periods, so nothing is lost.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section id="process">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>How it works</h2>
+          <p>A simple routine that keeps your books current without extra work on your side.</p>
+        </div>
+        <div class="grid grid-2 steps">
+          <div class="step"><h3>Share access</h3><p>Give us read access to your accounting software and send your statements and receipts.</p></div>
+          <div class="step"><h3>We record &amp; reconcile</h3><p>We code transactions and reconcile every account to its statement, down to the cent.</p></div>
+          <div class="step"><h3>We review</h3><p>A second check catches anything unusual before the month is closed.</p></div>
+          <div class="step"><h3>You get clear reports</h3><p>Receive your monthly reports and a short list of any questions we need answered.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Regions -->
+    <section id="regions" class="alt">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Where we work</h2>
+          <p>We support small businesses across six countries and are familiar with their currencies and reporting conventions.</p>
+        </div>
+        <div class="regions">
+          <span class="region">United States</span>
+          <span class="region">United Kingdom</span>
+          <span class="region">Australia</span>
+          <span class="region">Canada</span>
+          <span class="region">Ireland</span>
+          <span class="region">Mexico</span>
+        </div>
+        <p class="tools">Software we work in: <strong>QuickBooks Online</strong>, <strong>Xero</strong> and <strong>Wave</strong>.</p>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="wrap">
+        <div class="contact">
+          <h2>Ready for books you can trust?</h2>
+          <p>Tell us a little about your business and we'll get back to you with how we can help.</p>
+          <a class="btn" href="mailto:hello@example.com">Email us</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <span>© <span id="year">2026</span> Clear Ledger Bookkeeping</span>
+      <span>Accurate · Reconciled · On time</span>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
